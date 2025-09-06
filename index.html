@@ -6,9 +6,11 @@
     <title>Pablo Dario - Portfolio</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"/>
 </head>
 <body>
-    <!-- Navigation -->
+    <canvas id="canvas"></canvas>
+        <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">Pablo Dario</div>
@@ -17,10 +19,12 @@
                 <li><a href="#experience" class="nav-link">Experience</a></li>
                 <li><a href="#projects" class="nav-link">Projects</a></li>
                 <li><a href="#courses" class="nav-link">Courses</a></li>
+                <li><button id="toggleBtn">Stop Animation</button></li>
             </ul>
         </div>
     </nav>
 
+    
     <!-- Three.js Background Canvas -->
     <canvas id="bg-canvas"></canvas>
 
@@ -35,18 +39,26 @@
             <div class="left-content">
                 <div class="about-section">
                     <h3>About Me</h3>
-                    <p>I'm a Machine Learning Engineer with 4+ years of experience developing intelligent solutions for complex business problems. I specialize in building scalable ML pipelines, deploying models in production environments, and creating data-driven insights that drive strategic decisions.</p>
+                    <div class="experience-card">
+                        <p>I'm a Machine Learning Engineer with 4+ years of experience developing intelligent solutions for complex business problems. I specialize in building scalable ML pipelines, deploying models in production environments, and creating data-driven insights that drive strategic decisions.</p>
+                    </div>
                 </div>
                 
                 <div class="education-section">
                     <h3>Education</h3>
                     <div class="education-item">
-                        <h4>Master of Science in Computer Science</h4>
-                        <p>Stanford University • 2017-2019</p>
+                        <div class="experience-card">
+                            <h4>Master of Science in Computer Science</h4>
+                            <p>Stanford University • 2017-2019</p>
+                        </div>
+                        
                     </div>
                     <div class="education-item">
-                        <h4>Bachelor of Engineering in Computer Engineering</h4>
-                        <p>MIT • 2013-2017</p>
+                        <div class="experience-card">
+                            <h4>Bachelor of Engineering in Computer Engineering</h4>
+                            <p>MIT • 2013-2017</p>
+                        </div>
+                        
                     </div>
                 </div>
                 
@@ -61,25 +73,29 @@
                 <div class="skills-section">
                     <h3>Technical Skills</h3>
                     <div class="keyboard-grid">
-                        <div class="key" data-skill="Python"><i class="fab fa-python"></i></div>
-                        <div class="key" data-skill="Scikit-learn"><i class="fas fa-brain"></i></div>
-                        <div class="key" data-skill="PyTorch"><i class="fas fa-fire"></i></div>
-                        <div class="key" data-skill="Pandas"><i class="fas fa-table"></i></div>
-                        <div class="key" data-skill="Numpy"><i class="fas fa-calculator"></i></div>
-                        <div class="key" data-skill="Matplotlib"><i class="fas fa-chart-line"></i></div>
-                        <div class="key" data-skill="Seaborn"><i class="fas fa-chart-bar"></i></div>
-                        <div class="key" data-skill="FastAPI"><i class="fas fa-rocket"></i></div>
-                        <div class="key" data-skill="Docker"><i class="fab fa-docker"></i></div>
-                        <div class="key" data-skill="Linux"><i class="fab fa-linux"></i></div>
-                        <div class="key" data-skill="Redis"><i class="fas fa-database"></i></div>
-                        <div class="key" data-skill="SQL"><i class="fas fa-database"></i></div>
-                        <div class="key" data-skill="Kubernetes"><i class="fas fa-dharmachakra"></i></div>
-                        <div class="key" data-skill="Git"><i class="fab fa-git-alt"></i></div>
-                        <div class="key" data-skill="C++"><i class="fas fa-code"></i></div>
-                        <div class="key" data-skill="AWS"><i class="fab fa-aws"></i></div>
-                        <div class="key" data-skill="Apache Airflow"><i class="fas fa-wind"></i></div>
-                        <div class="key" data-skill="Grafana"><i class="fas fa-chart-area"></i></div>
-                        <div class="key" data-skill="Prometheus"><i class="fas fa-eye"></i></div>
+                        <div class="key python-key" data-skill="Python"><i class="devicon-python-plain"></i></div>
+                        <div class="key cpp-key" data-skill="C++"><i class="devicon-cplusplus-plain"></i></div>
+                        <div class="key sql-key" data-skill="SQL"><i class="devicon-azuresqldatabase-plain"></i></div>
+                        <div class="key git-key" data-skill="Git"><i class="devicon-git-plain"></i></div>
+                        <div class="key pytorch-key" data-skill="PyTorch"><i class="devicon-pytorch-original"></i></div>
+                        <div class="key sklearn-key" data-skill="Scikit-learn"><i class="devicon-scikitlearn-plain"></i></div>
+                        <div class="key pandas-key" data-skill="Pandas"><i class="devicon-pandas-plain"></i></div>
+                        <div class="key numpy-key" data-skill="Numpy"><i class="devicon-numpy-plain"></i></i></div>
+                        <div class="key mat plotlib-key" data-skill="Matplotlib"><i class="devicon-matplotlib-plain"></i></div>
+                        <div class="key fastapi-key" data-skill="FastAPI"><i class="devicon-fastapi-plain"></i></div>
+                        <div class="key docker-key" data-skill="Docker"><i class="devicon-docker-plain"></i></div>
+                        <div class="key linux-key" data-skill="Linux"><i class="devicon-linux-plain"></i></div>
+                        <div class="key redis-key" data-skill="Redis"><i class="devicon-redis-plain"></i></div>
+                        <div class="key kubernetes-key" data-skill="Kubernetes"><i class="devicon-kubernetes-plain"></i></div>
+                        <div class="key aws-key" data-skill="AWS"><i class="devicon-amazonwebservices-plain-wordmark"></i></div>
+                        <div class="key airflow-key" data-skill="Apache Airflow"><i class="devicon-apacheairflow-plain"></i></div>
+                        <div class="key grafana-key" data-skill="Grafana"><i class="devicon-grafana-plain"></i></div>
+                        <div class="key prometheus-key" data-skill="Prometheus"><i class="devicon-prometheus-original"></i></div>
+
+                        <div class="key prometheus-key" data-skill="Prometheus"><i class="devicon-zsh-plain"></i></div>
+                        <div class="key prometheus-key" data-skill="Prometheus"><i class="devicon-apachespark-original"></i></div>
+                        
+                        
                     </div>
                 </div>
             </div>

@@ -1,102 +1,155 @@
-// Three.js Background Animation
-let scene, camera, renderer, particles;
-let mouseX = 0, mouseY = 0;
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
-function initThreeJS() {
-    const canvas = document.getElementById('bg-canvas');
-    
-    // Scene setup
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    
-    // Create particles
-    const particleCount = 1000;
-    const positions = new Float32Array(particleCount * 3);
-    const velocities = new Float32Array(particleCount * 3);
-    
-    for (let i = 0; i < particleCount * 3; i += 3) {
-        positions[i] = (Math.random() - 0.5) * 100;
-        positions[i + 1] = (Math.random() - 0.5) * 100;
-        positions[i + 2] = (Math.random() - 0.5) * 100;
-        
-        velocities[i] = (Math.random() - 0.5) * 0.1;
-        velocities[i + 1] = (Math.random() - 0.5) * 0.1;
-        velocities[i + 2] = (Math.random() - 0.5) * 0.1;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+let connections = [];
+let isRunning = true;   // controla si está activo o pausado
+let globalOpacity = 1;  // controla desvanecimiento
+let targetOpacity = 1;  // hacia dónde se mueve la opacidad
+
+const colors = [
+  "rgba(100, 149, 237, ALPHA)", // azul suave
+  "rgba(123, 104, 238, ALPHA)", // púrpura lavanda
+  "rgba(72, 209, 204, ALPHA)",  // turquesa apagado
+  "rgba(176, 196, 222, ALPHA)", // azul grisáceo
+  "rgba(220, 80, 90, ALPHA)",    // rojo suave
+  "rgba(0, 0, 0, ALPHA)" //white
+];
+
+class Particle {
+  constructor(x, y, radius) {
+    this.x = x || Math.random() * canvas.width;
+    this.y = y || Math.random() * canvas.height;
+    this.radius = radius || Math.random() * 5 + 2;
+    this.life = Math.random() * 700 + 200;
+    this.opacity = Math.random();
+    this.fade = Math.random() * 0.01 + 0.002;
+    this.color = this.randomColor();
+    this.vx = (Math.random() - 0.5) * 0.2;
+    this.vy = (Math.random() - 0.5) * 0.2;
+  }
+
+  randomColor() {
+    const base = colors[Math.floor(Math.random() * colors.length)];
+    return base.replace("ALPHA", this.opacity.toFixed(2));
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+
+    this.opacity += this.fade;
+    if (this.opacity <= 0 || this.opacity >= 1) {
+      this.fade *= -1;
     }
-    
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('velocity', new THREE.BufferAttribute(velocities, 3));
-    
-    const material = new THREE.PointsMaterial({
-        color: 0xa855f7,
-        size: 2,
-        transparent: true,
-        opacity: 0.6
-    });
-    
-    particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-    
-    camera.position.z = 50;
-    
-    // Mouse move event
-    document.addEventListener('mousemove', onMouseMove);
-    
-    animate();
+
+    this.life--;
+    if (this.life <= 0) {
+      const index = particles.indexOf(this);
+      particles.splice(index, 1);
+      particles.push(new Particle());
+    }
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    ctx.fillStyle = this.color.replace("ALPHA", (this.opacity * globalOpacity).toFixed(2));
+    ctx.fill();
+    ctx.closePath();
+  }
 }
 
-function onMouseMove(event) {
-    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+class Connection {
+  constructor(p1, p2) {
+    this.p1 = p1;
+    this.p2 = p2;
+    this.opacity = 1;
+  }
+
+  update() {
+    this.opacity -= 0.005;
+    if (this.opacity <= 0) {
+      const index = connections.indexOf(this);
+      connections.splice(index, 1);
+    }
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.moveTo(this.p1.x, this.p1.y);
+    ctx.lineTo(this.p2.x, this.p2.y);
+    ctx.strokeStyle = `rgba(200,200,200,${(this.opacity * globalOpacity).toFixed(2)})`;
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+    ctx.closePath();
+  }
+}
+
+function init() {
+  particles = [];
+  for (let i = 0; i < 250; i++) {
+    particles.push(new Particle());
+  }
 }
 
 function animate() {
-    requestAnimationFrame(animate);
-    
-    if (particles) {
-        const positions = particles.geometry.attributes.position.array;
-        const velocities = particles.geometry.attributes.velocity.array;
-        
-        for (let i = 0; i < positions.length; i += 3) {
-            // Update positions
-            positions[i] += velocities[i];
-            positions[i + 1] += velocities[i + 1];
-            positions[i + 2] += velocities[i + 2];
-            
-            // Mouse interaction
-            const dx = mouseX * 50 - positions[i];
-            const dy = mouseY * 50 - positions[i + 1];
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance < 10) {
-                velocities[i] += dx * 0.0001;
-                velocities[i + 1] += dy * 0.0001;
-            }
-            
-            // Boundary check
-            if (positions[i] > 50 || positions[i] < -50) velocities[i] *= -1;
-            if (positions[i + 1] > 50 || positions[i + 1] < -50) velocities[i + 1] *= -1;
-            if (positions[i + 2] > 50 || positions[i + 2] < -50) velocities[i + 2] *= -1;
-        }
-        
-        particles.geometry.attributes.position.needsUpdate = true;
-        particles.rotation.y += 0.001;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // animar desvanecimiento
+  globalOpacity += (targetOpacity - globalOpacity) * 0.05;
+
+  // partículas
+  particles.forEach((p) => {
+    if (isRunning) p.update();
+    p.draw();
+  });
+
+  // conexiones
+  if (isRunning && Math.random() < 0.01) {
+    let p1 = particles[Math.floor(Math.random() * particles.length)];
+    let p2 = particles[Math.floor(Math.random() * particles.length)];
+    if (p1 !== p2) {
+      connections.push(new Connection(p1, p2));
     }
-    
-    renderer.render(scene, camera);
+  }
+
+  connections.forEach((c) => {
+    if (isRunning) c.update();
+    c.draw();
+  });
+
+  requestAnimationFrame(animate);
 }
 
-// Window resize handler
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-}
+// inicializar
+init();
+animate();
 
-window.addEventListener('resize', onWindowResize);
+// botón de pausa/reanudar
+document.getElementById("toggleBtn").addEventListener("click", () => {
+  isRunning = !isRunning;
+  if (isRunning) {
+    targetOpacity = 1; // aparece
+    document.getElementById("toggleBtn").textContent = "Stop Animation";
+  } else {
+    targetOpacity = 0; // desvanece
+    document.getElementById("toggleBtn").textContent = "Play Animation";
+  }
+});
+
+// ajuste al cambiar tamaño
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  init();
+});
+
+
+// ------------ Particle animation ends
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('.nav-link').forEach(link => {
@@ -329,26 +382,44 @@ document.querySelectorAll('.experience-card, .project-card, .course-card').forEa
     observer.observe(el);
 });
 
-// Initialize Three.js when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initThreeJS();
+document.addEventListener('DOMContentLoaded', function() {    
     
     // Add typing effect to subtitle
     const subtitle = document.querySelector('.subtitle');
-    const text = subtitle.textContent;
-    subtitle.textContent = '';
+    const subtitleSecondary = document.querySelector('.subtitle-secondary');
     
-    let i = 0;
-    const typeWriter = () => {
-        if (i < text.length) {
-            subtitle.textContent += text.charAt(i);
-            i++;
-            setTimeout(typeWriter, 50);
-        }
-    };
-    
-    // Start typing effect after title animation
-    setTimeout(typeWriter, 1000);
+    if (subtitle && subtitleSecondary) {
+        const text1 = subtitle.textContent;
+        const text2 = subtitleSecondary.textContent;
+        
+        subtitle.textContent = '';
+        subtitleSecondary.textContent = '';
+        
+        let i = 0;
+        const typeWriter1 = () => {
+            if (i < text1.length) {
+                subtitle.textContent += text1.charAt(i);
+                i++;
+                setTimeout(typeWriter1, 80);
+            } else {
+                // Start typing second subtitle
+                setTimeout(() => {
+                    let j = 0;
+                    const typeWriter2 = () => {
+                        if (j < text2.length) {
+                            subtitleSecondary.textContent += text2.charAt(j);
+                            j++;
+                            setTimeout(typeWriter2, 80);
+                        }
+                    };
+                    typeWriter2();
+                }, 300);
+            }
+        };
+        
+        // Start typing effect after title animation
+        setTimeout(typeWriter1, 1000);
+    }
 });
 
 // Keyboard shortcut for quick navigation
