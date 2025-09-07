@@ -1,173 +1,148 @@
+/**
+ * Portfolio JavaScript - Optimizado y limpio
+ * Controla la animación de partículas, navegación, modales y efectos interactivos
+ */
+
+// ============ CONFIGURACIÓN DE CANVAS Y PARTÍCULAS ============
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
+// Variables globales para el control de animación
 let particles = [];
 let connections = [];
-let isRunning = true;   // controla si está activo o pausado
-let globalOpacity = 1;  // controla desvanecimiento
-let targetOpacity = 1;  // hacia dónde se mueve la opacidad
+let isRunning = true;
+let globalOpacity = 1;
+let targetOpacity = 1;
 
+// Configuración del canvas
+function initializeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+// Paleta de colores para las partículas
 const colors = [
-  "rgba(100, 149, 237, ALPHA)", // azul suave
-  "rgba(123, 104, 238, ALPHA)", // púrpura lavanda
-  "rgba(72, 209, 204, ALPHA)",  // turquesa apagado
-  "rgba(176, 196, 222, ALPHA)", // azul grisáceo
-  "rgba(220, 80, 90, ALPHA)",    // rojo suave
-  "rgba(0, 0, 0, ALPHA)" //white
+    "rgba(100, 149, 237, ALPHA)",
+    "rgba(123, 104, 238, ALPHA)",
+    "rgba(72, 209, 204, ALPHA)",
+    "rgba(176, 196, 222, ALPHA)",
+    "rgba(220, 80, 90, ALPHA)",
+    "rgba(0, 0, 0, ALPHA)"
 ];
 
+// ============ CLASES PARA PARTÍCULAS Y CONEXIONES ============
 class Particle {
-  constructor(x, y, radius) {
-    this.x = x || Math.random() * canvas.width;
-    this.y = y || Math.random() * canvas.height;
-    this.radius = radius || Math.random() * 5 + 2;
-    this.life = Math.random() * 700 + 200;
-    this.opacity = Math.random();
-    this.fade = Math.random() * 0.01 + 0.002;
-    this.color = this.randomColor();
-    this.vx = (Math.random() - 0.5) * 0.2;
-    this.vy = (Math.random() - 0.5) * 0.2;
-  }
-
-  randomColor() {
-    const base = colors[Math.floor(Math.random() * colors.length)];
-    return base.replace("ALPHA", this.opacity.toFixed(2));
-  }
-
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-
-    this.opacity += this.fade;
-    if (this.opacity <= 0 || this.opacity >= 1) {
-      this.fade *= -1;
+    constructor(x, y, radius) {
+        this.x = x || Math.random() * canvas.width;
+        this.y = y || Math.random() * canvas.height;
+        this.radius = radius || Math.random() * 5 + 2;
+        this.life = Math.random() * 700 + 200;
+        this.opacity = Math.random();
+        this.fade = Math.random() * 0.01 + 0.002;
+        this.color = this.randomColor();
+        this.vx = (Math.random() - 0.5) * 0.2;
+        this.vy = (Math.random() - 0.5) * 0.2;
     }
 
-    this.life--;
-    if (this.life <= 0) {
-      const index = particles.indexOf(this);
-      particles.splice(index, 1);
-      particles.push(new Particle());
+    randomColor() {
+        const base = colors[Math.floor(Math.random() * colors.length)];
+        return base.replace("ALPHA", this.opacity.toFixed(2));
     }
-  }
 
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-    ctx.fillStyle = this.color.replace("ALPHA", (this.opacity * globalOpacity).toFixed(2));
-    ctx.fill();
-    ctx.closePath();
-  }
+    update() {
+        // Movimiento de la partícula
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Cambio de opacidad
+        this.opacity += this.fade;
+        if (this.opacity <= 0 || this.opacity >= 1) {
+            this.fade *= -1;
+        }
+
+        // Ciclo de vida
+        this.life--;
+        if (this.life <= 0) {
+            const index = particles.indexOf(this);
+            particles.splice(index, 1);
+            particles.push(new Particle());
+        }
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = this.color.replace("ALPHA", (this.opacity * globalOpacity).toFixed(2));
+        ctx.fill();
+        ctx.closePath();
+    }
 }
 
 class Connection {
-  constructor(p1, p2) {
-    this.p1 = p1;
-    this.p2 = p2;
-    this.opacity = 1;
-  }
-
-  update() {
-    this.opacity -= 0.005;
-    if (this.opacity <= 0) {
-      const index = connections.indexOf(this);
-      connections.splice(index, 1);
+    constructor(p1, p2) {
+        this.p1 = p1;
+        this.p2 = p2;
+        this.opacity = 1;
     }
-  }
 
-  draw() {
-    ctx.beginPath();
-    ctx.moveTo(this.p1.x, this.p1.y);
-    ctx.lineTo(this.p2.x, this.p2.y);
-    ctx.strokeStyle = `rgba(200,200,200,${(this.opacity * globalOpacity).toFixed(2)})`;
-    ctx.lineWidth = 0.5;
-    ctx.stroke();
-    ctx.closePath();
-  }
+    update() {
+        this.opacity -= 0.005;
+        if (this.opacity <= 0) {
+            const index = connections.indexOf(this);
+            connections.splice(index, 1);
+        }
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.moveTo(this.p1.x, this.p1.y);
+        ctx.lineTo(this.p2.x, this.p2.y);
+        ctx.strokeStyle = `rgba(200,200,200,${(this.opacity * globalOpacity).toFixed(2)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+        ctx.closePath();
+    }
 }
 
-function init() {
-  particles = [];
-  for (let i = 0; i < 250; i++) {
-    particles.push(new Particle());
-  }
+// ============ FUNCIONES DE ANIMACIÓN ============
+function initParticles() {
+    particles = [];
+    for (let i = 0; i < 250; i++) {
+        particles.push(new Particle());
+    }
 }
 
 function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // animar desvanecimiento
-  globalOpacity += (targetOpacity - globalOpacity) * 0.05;
+    // Animación de desvanecimiento suave
+    globalOpacity += (targetOpacity - globalOpacity) * 0.05;
 
-  // partículas
-  particles.forEach((p) => {
-    if (isRunning) p.update();
-    p.draw();
-  });
+    // Actualizar y dibujar partículas
+    particles.forEach((particle) => {
+        if (isRunning) particle.update();
+        particle.draw();
+    });
 
-  // conexiones
-  if (isRunning && Math.random() < 0.01) {
-    let p1 = particles[Math.floor(Math.random() * particles.length)];
-    let p2 = particles[Math.floor(Math.random() * particles.length)];
-    if (p1 !== p2) {
-      connections.push(new Connection(p1, p2));
+    // Crear nuevas conexiones aleatoriamente
+    if (isRunning && Math.random() < 0.01) {
+        const p1 = particles[Math.floor(Math.random() * particles.length)];
+        const p2 = particles[Math.floor(Math.random() * particles.length)];
+        if (p1 !== p2) {
+            connections.push(new Connection(p1, p2));
+        }
     }
-  }
 
-  connections.forEach((c) => {
-    if (isRunning) c.update();
-    c.draw();
-  });
+    // Actualizar y dibujar conexiones
+    connections.forEach((connection) => {
+        if (isRunning) connection.update();
+        connection.draw();
+    });
 
-  requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
 }
 
-// inicializar
-init();
-animate();
-
-// botón de pausa/reanudar
-document.getElementById("toggleBtn").addEventListener("click", () => {
-  isRunning = !isRunning;
-  if (isRunning) {
-    targetOpacity = 1; // aparece
-    document.getElementById("toggleBtn").textContent = "Stop Animation";
-  } else {
-    targetOpacity = 0; // desvanece
-    document.getElementById("toggleBtn").textContent = "Play Animation";
-  }
-});
-
-// ajuste al cambiar tamaño
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  init();
-});
-
-
-// ------------ Particle animation ends
-
-// Smooth scrolling for navigation links
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        
-        if (targetSection) {
-            targetSection.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
-
-// Project modal functionality
+// ============ DATOS DE PROYECTOS ============
 const projectDetails = {
     novaspace: {
         title: "NovaSpace - Deep Learning Platform",
@@ -304,195 +279,294 @@ const projectDetails = {
     }
 };
 
-// Project card click handlers
-document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('click', function() {
-        const projectId = this.getAttribute('data-project');
-        const projectData = projectDetails[projectId];
-        
-        if (projectData) {
-            const modal = document.getElementById('project-detail');
-            const modalBody = document.getElementById('project-detail-body');
-            
-            modalBody.innerHTML = projectData.content;
-            modal.classList.remove('hidden');
-            
-            // Prevent body scroll when modal is open
-            document.body.style.overflow = 'hidden';
-        }
-    });
-});
+// ============ EVENT LISTENERS Y FUNCIONES DE INTERACCIÓN ============
 
-// Close modal functionality
-document.querySelector('.close-btn').addEventListener('click', function() {
+/**
+ * Inicialización del DOM y eventos
+ */
+function initializeEventListeners() {
+    // Control de animación de partículas
+    const toggleBtn = document.getElementById("toggleBtn");
+    if (toggleBtn) {
+        toggleBtn.addEventListener("click", toggleAnimation);
+    }
+
+    // Navegación suave
+    initSmoothNavigation();
+
+    // Modales de proyectos
+    initProjectModals();
+
+    // Efectos de hover en skills
+    initSkillHoverEffects();
+
+    // Efectos de scroll en navbar
+    initNavbarScrollEffect();
+
+    // Observer para animaciones
+    initScrollAnimations();
+
+    // Atajos de teclado
+    initKeyboardShortcuts();
+}
+
+/**
+ * Control de la animación de partículas
+ */
+function toggleAnimation() {
+    const toggleBtn = document.getElementById("toggleBtn");
+    isRunning = !isRunning;
+    
+    if (isRunning) {
+        targetOpacity = 1;
+        toggleBtn.textContent = "Stop Animation";
+    } else {
+        targetOpacity = 0;
+        toggleBtn.textContent = "Play Animation";
+    }
+}
+
+/**
+ * Navegación suave entre secciones
+ */
+function initSmoothNavigation() {
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+}
+
+/**
+ * Modales de proyectos
+ */
+function initProjectModals() {
+    // Abrir modal al hacer clic en proyecto
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const projectId = this.getAttribute('data-project');
+            openProjectModal(projectId);
+        });
+    });
+
+    // Cerrar modal
+    const closeBtn = document.querySelector('.close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeProjectModal);
+    }
+
+    // Cerrar modal al hacer clic fuera
+    const modal = document.getElementById('project-detail');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeProjectModal();
+            }
+        });
+    }
+}
+
+/**
+ * Abrir modal de proyecto
+ */
+function openProjectModal(projectId) {
+    const projectData = projectDetails[projectId];
+    
+    if (projectData) {
+        const modal = document.getElementById('project-detail');
+        const modalBody = document.getElementById('project-detail-body');
+        
+        modalBody.innerHTML = projectData.content;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+/**
+ * Cerrar modal de proyecto
+ */
+function closeProjectModal() {
     const modal = document.getElementById('project-detail');
     modal.classList.add('hidden');
     document.body.style.overflow = 'auto';
-});
+}
 
-// Close modal when clicking outside
-document.getElementById('project-detail').addEventListener('click', function(e) {
-    if (e.target === this) {
-        this.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-    }
-});
-
-// Skill key hover effects
-document.querySelectorAll('.key').forEach(key => {
-    key.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-5px) rotateX(15deg)';
-    });
-    
-    key.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) rotateX(0)';
-    });
-});
-
-// Navbar scroll effect
-window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(0, 0, 0, 0.95)';
-    } else {
-        navbar.style.background = 'rgba(0, 0, 0, 0.9)';
-    }
-});
-
-// Intersection Observer for animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-// Observe elements for scroll animations
-document.querySelectorAll('.experience-card, .project-card, .course-card').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
-});
-
-document.addEventListener('DOMContentLoaded', function() {    
-    
-    // Add typing effect to subtitle
-    const subtitle = document.querySelector('.subtitle');
-    const subtitleSecondary = document.querySelector('.subtitle-secondary');
-    
-    if (subtitle && subtitleSecondary) {
-        const text1 = subtitle.textContent;
-        const text2 = subtitleSecondary.textContent;
+/**
+ * Efectos de hover en las skills
+ */
+function initSkillHoverEffects() {
+    document.querySelectorAll('.key').forEach(key => {
+        key.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.05)';
+        });
         
-        subtitle.textContent = '';
-        subtitleSecondary.textContent = '';
-        
-        let i = 0;
-        const typeWriter1 = () => {
-            if (i < text1.length) {
-                subtitle.textContent += text1.charAt(i);
-                i++;
-                setTimeout(typeWriter1, 80);
+        key.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+}
+
+/**
+ * Efecto de scroll en la navbar
+ */
+function initNavbarScrollEffect() {
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(0, 0, 0, 0.95)';
             } else {
-                // Start typing second subtitle
-                setTimeout(() => {
-                    let j = 0;
-                    const typeWriter2 = () => {
-                        if (j < text2.length) {
-                            subtitleSecondary.textContent += text2.charAt(j);
-                            j++;
-                            setTimeout(typeWriter2, 80);
-                        }
-                    };
-                    typeWriter2();
-                }, 300);
+                navbar.style.background = 'rgba(0, 0, 0, 0.9)';
             }
-        };
-        
-        // Start typing effect after title animation
-        setTimeout(typeWriter1, 1000);
-    }
-});
-
-// Keyboard shortcut for quick navigation
-document.addEventListener('keydown', function(e) {
-    if (e.altKey) {
-        switch(e.key) {
-            case '1':
-                document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
-                break;
-            case '2':
-                document.getElementById('experience').scrollIntoView({ behavior: 'smooth' });
-                break;
-            case '3':
-                document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
-                break;
-            case '4':
-                document.getElementById('courses').scrollIntoView({ behavior: 'smooth' });
-                break;
-        }
-    }
-});
-
-// Add particle trail effect on mouse move
-let trail = [];
-const maxTrailLength = 20;
-
-document.addEventListener('mousemove', function(e) {
-    trail.push({ x: e.clientX, y: e.clientY, life: maxTrailLength });
-    
-    if (trail.length > maxTrailLength) {
-        trail.shift();
-    }
-    
-    // Update existing trail particles
-    trail.forEach((particle, index) => {
-        particle.life--;
-        if (particle.life <= 0) {
-            trail.splice(index, 1);
         }
     });
-});
+}
 
-// Smooth reveal animation for sections
-const revealElements = document.querySelectorAll('.section');
-const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
+/**
+ * Animaciones al hacer scroll
+ */
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observar elementos para animaciones
+    const elementsToAnimate = [
+        '.experience-card', 
+        '.project-card', 
+        '.course-card',
+        '.about-card',
+        '.education-card'
+    ];
+
+    elementsToAnimate.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    });
+
+    // Observer para secciones principales
+    const revealElements = document.querySelectorAll('.section');
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    revealElements.forEach(el => {
+        revealObserver.observe(el);
+    });
+
+    // Agregar estilos CSS para las animaciones de reveal
+    if (!document.querySelector('#reveal-styles')) {
+        const style = document.createElement('style');
+        style.id = 'reveal-styles';
+        style.textContent = `
+            .section {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.8s ease, transform 0.8s ease;
+            }
+            
+            .section.revealed {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            .section:first-child {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+/**
+ * Atajos de teclado para navegación
+ */
+function initKeyboardShortcuts() {
+    document.addEventListener('keydown', function(e) {
+        if (e.altKey) {
+            const sections = {
+                '1': '#home',
+                '2': '#experience',
+                '3': '#projects',
+                '4': '#courses'
+            };
+
+            const targetSection = sections[e.key];
+            if (targetSection) {
+                document.querySelector(targetSection).scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            }
         }
     });
-}, { threshold: 0.1 });
+}
 
-revealElements.forEach(el => {
-    revealObserver.observe(el);
-});
+/**
+ * Redimensionamiento del canvas
+ */
+function handleResize() {
+    initializeCanvas();
+    initParticles();
+}
 
-// Add CSS class for revealed elements
-const style = document.createElement('style');
-style.textContent = `
-    .section {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.8s ease, transform 0.8s ease;
-    }
+// ============ INICIALIZACIÓN ============
+
+/**
+ * Función principal de inicialización
+ */
+function init() {
+    // Configurar canvas
+    initializeCanvas();
     
-    .section.revealed {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    // Inicializar partículas
+    initParticles();
     
-    .section:first-child {
-        opacity: 1;
-        transform: translateY(0);
-    }
-`;
-document.head.appendChild(style);
+    // Comenzar animación
+    animate();
+    
+    // Event listeners
+    initializeEventListeners();
+    
+    // Listener para redimensionamiento
+    window.addEventListener('resize', handleResize);
+}
+
+// ============ EJECUCIÓN AL CARGAR LA PÁGINA ============
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', init);
+
+// Inicializar inmediatamente si el DOM ya está cargado
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
