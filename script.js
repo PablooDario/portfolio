@@ -1,8 +1,3 @@
-/**
- * Portfolio JavaScript - Optimizado y limpio
- * Controla la animación de partículas, navegación, modales y efectos interactivos
- */
-
 // ============ CONFIGURACIÓN DE CANVAS Y PARTÍCULAS ============
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -141,143 +136,7 @@ function animate() {
 
     requestAnimationFrame(animate);
 }
-
-// ============ DATOS DE PROYECTOS ============
-const projectDetails = {
-    novaspace: {
-        title: "NovaSpace - Deep Learning Platform",
-        content: `
-            <h2>NovaSpace - Deep Learning Platform</h2>
-            <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=800&h=400&fit=crop" alt="NovaSpace" style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px; margin: 20px 0;">
-            
-            <h3>Project Overview</h3>
-            <p>NovaSpace is a comprehensive deep learning platform designed for space exploration data analysis. The system processes satellite imagery, sensor data, and astronomical observations using state-of-the-art computer vision and machine learning techniques.</p>
-            
-            <h3>Key Features</h3>
-            <ul>
-                <li><strong>Real-time Satellite Image Processing:</strong> Automated analysis of satellite imagery for terrain mapping, weather pattern detection, and anomaly identification.</li>
-                <li><strong>Multi-spectral Data Analysis:</strong> Processing of various electromagnetic spectrum data to identify celestial objects and phenomena.</li>
-                <li><strong>Predictive Modeling:</strong> Machine learning models for predicting space weather, orbital mechanics, and mission success probability.</li>
-                <li><strong>Interactive Dashboard:</strong> Web-based interface for mission control teams to visualize data and insights in real-time.</li>
-            </ul>
-            
-            <h3>Technical Stack</h3>
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 20px 0;">
-                <div>
-                    <h4>Backend Technologies</h4>
-                    <ul>
-                        <li>Python with FastAPI framework</li>
-                        <li>PyTorch for deep learning models</li>
-                        <li>OpenCV for image processing</li>
-                        <li>PostgreSQL with PostGIS extension</li>
-                        <li>Redis for caching and real-time data</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Infrastructure & Deployment</h4>
-                    <ul>
-                        <li>Docker containerization</li>
-                        <li>Kubernetes orchestration</li>
-                        <li>AWS S3 for data storage</li>
-                        <li>Apache Airflow for data pipelines</li>
-                        <li>Grafana and Prometheus monitoring</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <h3>Results & Impact</h3>
-            <p>The platform has successfully processed over 50,000 satellite images and contributed to 12 successful space missions. It has reduced manual analysis time by 85% and improved anomaly detection accuracy to 94.7%.</p>
-            
-            <div style="background: rgba(168, 85, 247, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
-                <h4>Key Metrics</h4>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin: 10px 0;"><strong>Processing Speed:</strong> 1,000+ images per hour</li>
-                    <li style="margin: 10px 0;"><strong>Accuracy:</strong> 94.7% anomaly detection rate</li>
-                    <li style="margin: 10px 0;"><strong>Data Volume:</strong> 50TB+ processed monthly</li>
-                    <li style="margin: 10px 0;"><strong>Uptime:</strong> 99.9% system availability</li>
-                </ul>
-            </div>
-        `
-    },
-    aitrader: {
-        title: "AI Trading Bot",
-        content: `
-            <h2>AI Trading Bot - Reinforcement Learning System</h2>
-            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=400&fit=crop" alt="AI Trading Bot" style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px; margin: 20px 0;">
-            
-            <h3>Project Overview</h3>
-            <p>An advanced automated trading system that uses reinforcement learning and real-time market data analysis for cryptocurrency trading. The bot makes intelligent trading decisions based on market patterns, news sentiment, and technical indicators.</p>
-            
-            <h3>Core Features</h3>
-            <ul>
-                <li><strong>Reinforcement Learning Engine:</strong> Deep Q-Network (DQN) and Proximal Policy Optimization (PPO) algorithms for decision making.</li>
-                <li><strong>Multi-source Data Integration:</strong> Real-time price feeds, social media sentiment, and news analysis.</li>
-                <li><strong>Risk Management:</strong> Advanced position sizing and stop-loss mechanisms to protect capital.</li>
-                <li><strong>Backtesting Framework:</strong> Historical simulation capabilities for strategy validation.</li>
-            </ul>
-            
-            <h3>Performance Metrics</h3>
-            <div style="background: rgba(168, 85, 247, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
-                <h4>Trading Performance (Last 12 Months)</h4>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin: 10px 0;"><strong>Total Return:</strong> +127.3%</li>
-                    <li style="margin: 10px 0;"><strong>Sharpe Ratio:</strong> 2.41</li>
-                    <li style="margin: 10px 0;"><strong>Max Drawdown:</strong> -8.7%</li>
-                    <li style="margin: 10px 0;"><strong>Win Rate:</strong> 68.2%</li>
-                    <li style="margin: 10px 0;"><strong>Total Trades:</strong> 1,247</li>
-                </ul>
-            </div>
-        `
-    },
-    healthai: {
-        title: "HealthAI - Medical Diagnosis Assistant",
-        content: `
-            <h2>HealthAI - Medical Diagnosis Assistant</h2>
-            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=400&fit=crop" alt="HealthAI" style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px; margin: 20px 0;">
-            
-            <h3>Project Overview</h3>
-            <p>HealthAI is an intelligent medical diagnosis assistant that uses transformer models to analyze patient symptoms and suggest potential treatment options. The system is designed to assist healthcare professionals in making more accurate and timely diagnoses.</p>
-            
-            <h3>Technology Implementation</h3>
-            <p>Built using state-of-the-art transformer architecture (BERT-based models) trained on medical literature and anonymized patient data. The system incorporates natural language processing to understand symptom descriptions and medical history.</p>
-            
-            <h3>Clinical Impact</h3>
-            <div style="background: rgba(168, 85, 247, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
-                <h4>Validation Results</h4>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin: 10px 0;"><strong>Diagnostic Accuracy:</strong> 89.3% (validated against specialist diagnoses)</li>
-                    <li style="margin: 10px 0;"><strong>Time Reduction:</strong> 42% decrease in initial assessment time</li>
-                    <li style="margin: 10px 0;"><strong>Patient Cases:</strong> 15,000+ successfully analyzed</li>
-                    <li style="margin: 10px 0;"><strong>Specialties Covered:</strong> 12 medical specialties</li>
-                </ul>
-            </div>
-        `
-    },
-    smartcity: {
-        title: "Smart City Analytics",
-        content: `
-            <h2>Smart City Analytics - IoT Data Processing</h2>
-            <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?w=800&h=400&fit=crop" alt="Smart City Analytics" style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px; margin: 20px 0;">
-            
-            <h3>Project Overview</h3>
-            <p>A comprehensive IoT data processing pipeline designed for urban traffic optimization using machine learning and real-time analytics. The system processes data from thousands of sensors across the city to optimize traffic flow and reduce congestion.</p>
-            
-            <h3>System Architecture</h3>
-            <p>The platform uses Apache Kafka for real-time data streaming, Apache Spark for distributed processing, and machine learning models for predictive analytics. Data visualization is provided through custom dashboards built with React and D3.js.</p>
-            
-            <h3>Impact Metrics</h3>
-            <div style="background: rgba(168, 85, 247, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
-                <h4>Traffic Optimization Results</h4>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin: 10px 0;"><strong>Traffic Reduction:</strong> 23% decrease in average commute time</li>
-                    <li style="margin: 10px 0;"><strong>Fuel Savings:</strong> $2.3M annually in reduced fuel consumption</li>
-                    <li style="margin: 10px 0;"><strong>Sensors Deployed:</strong> 3,500+ IoT devices</li>
-                    <li style="margin: 10px 0;"><strong>Data Processing:</strong> 1.2TB daily data volume</li>
-                </ul>
-            </div>
-        `
-    }
-};
+    
 
 // ============ EVENT LISTENERS Y FUNCIONES DE INTERACCIÓN ============
 
@@ -401,17 +260,63 @@ function closeProjectModal() {
 }
 
 /**
- * Efectos de hover en las skills
+ * Efectos de hover en las skills con tooltip dinámico
  */
 function initSkillHoverEffects() {
+    const tooltip = document.getElementById('skill-tooltip');
+    let currentSkill = null;
+    
     document.querySelectorAll('.key').forEach(key => {
-        key.addEventListener('mouseenter', function() {
+        key.addEventListener('mouseenter', function(e) {
+            currentSkill = this;
+            
+            // Efecto visual en la skill
             this.style.transform = 'translateY(-8px) scale(1.05)';
+            
+            // Mostrar tooltip
+            const skillName = this.getAttribute('data-skill');
+            if (skillName && tooltip) {
+                tooltip.textContent = skillName;
+                
+                // Posicionar tooltip
+                const rect = this.getBoundingClientRect();
+                const tooltipX = rect.left + (rect.width / 2);
+                const tooltipY = rect.bottom + 15;
+                
+                tooltip.style.left = tooltipX + 'px';
+                tooltip.style.top = tooltipY + 'px';
+                tooltip.style.transform = 'translateX(-50%)';
+                
+                // Mostrar inmediatamente
+                tooltip.classList.add('show');
+            }
         });
         
-        key.addEventListener('mouseleave', function() {
+        key.addEventListener('mouseleave', function(e) {
+            currentSkill = null;
+            
+            // Restaurar efecto visual
             this.style.transform = 'translateY(0) scale(1)';
+            
+            // Ocultar tooltip inmediatamente
+            if (tooltip) {
+                tooltip.classList.remove('show');
+            }
         });
+    });
+
+    // Ocultar tooltip si el mouse sale del área de skills
+    document.addEventListener('mousemove', function(e) {
+        if (!currentSkill && tooltip) {
+            tooltip.classList.remove('show');
+        }
+    });
+
+    // Ocultar tooltip al hacer scroll
+    window.addEventListener('scroll', function() {
+        if (tooltip) {
+            tooltip.classList.remove('show');
+        }
     });
 }
 

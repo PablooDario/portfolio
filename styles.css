@@ -73,7 +73,7 @@ canvas {
 .nav-logo {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #a855f7;
+    color: #f7ec55;
 }
 
 .nav-menu {
@@ -110,14 +110,13 @@ canvas {
 
 /* Secciones generales */
 .section {
-    min-height: 100vh;
     padding: 100px 2rem 50px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 .section-title {
-    font-size: 3rem;
+    font-size: 4rem;
     margin-bottom: 3rem;
     text-align: center;
     background: linear-gradient(135deg, #a855f7, #ec4899);
@@ -169,28 +168,37 @@ canvas {
 }
 
 /* Contenido del home */
-.home-content {
+
+.about-section {
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 4rem;
+}
+
+/*Titles*/
+.about-section h3 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.about-title{color: #a855f7}
+.education-title{color:#ec4899}
+
+.about-content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    grid-template-columns: 350px 1fr;
+    gap: 3rem;
     align-items: start;
 }
 
-.left-content h3,
-.right-content h3 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-    color: #a855f7;
+.education-and-social {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
-.left-content p {
-    margin-bottom: 1.5rem;
-    color: #ccc;
-    line-height: 1.8;
-}
-
-/* Estilos específicos para About */
-.about-card {
+/*Description*/
+.description-card{
     background: rgba(168, 85, 247, 0.08);
     backdrop-filter: blur(15px);
     border: 1px solid rgba(168, 85, 247, 0.2);
@@ -199,51 +207,69 @@ canvas {
     margin-bottom: 2rem;
     transition: all 0.3s ease;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    position: relative;
+    left: -8px;
 }
 
-.about-card:hover {
+.description-card:hover {
     transform: translateY(-3px);
     background: rgba(168, 85, 247, 0.12);
     border-color: rgba(168, 85, 247, 0.4);
     box-shadow: 0 15px 35px rgba(168, 85, 247, 0.15);
 }
 
-/* Estilos específicos para Education */
+.description-card p {
+    margin-bottom: 1.5rem;
+    color: #ccc;
+    line-height: 1.8;
+}
+
+.description-card p:last-child {
+    margin-bottom: 0;
+}
+
+/* Education */
 .education-card {
     background: rgba(236, 72, 153, 0.08);
     backdrop-filter: blur(15px);
     border: 1px solid rgba(236, 72, 153, 0.2);
     border-radius: 15px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: 2rem;
+    margin-bottom: 0rem;
     transition: all 0.3s ease;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    /*Subirla para alinearlo con description*/
+    position: relative;
+    left: -8px;
+    top: -30px;
 }
 
 .education-card:hover {
     transform: translateY(-3px);
     background: rgba(236, 72, 153, 0.12);
     border-color: rgba(236, 72, 153, 0.4);
-    box-shadow: 0 12px 30px rgba(236, 72, 153, 0.15);
+    box-shadow: 0 15px 35px rgba(236, 72, 153, 0.15);
 }
 
 .education-card h4 {
     color: #ec4899;
     margin-bottom: 0.5rem;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
 .education-card p {
     color: #999;
-    font-size: 0.9rem;
-    margin: 0;
+    font-size: 0.95rem;
+    margin: 0.3rem 0;
 }
 
-/* Enlaces sociales */
+/* Grid de habilidades técnicas */
 .social-links {
     display: flex;
+    position: relative;
+    top: -30px;
     gap: 1rem;
-    margin-top: 2rem;
+    justify-content: flex-start;
 }
 
 .social-link {
@@ -253,21 +279,33 @@ canvas {
     width: 50px;
     height: 50px;
     background: rgba(168, 85, 247, 0.1);
-    border: 2px solid #a855f7;
+    border: 2px solid #ec4899;
     border-radius: 50%;
-    color: #a855f7;
+    color: #ec4899;
     text-decoration: none;
     transition: all 0.3s ease;
 }
 
 .social-link:hover {
-    background: #a855f7;
+    background: #ec4899;
     color: #000;
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(168, 85, 247, 0.3);
 }
 
-/* Grid de habilidades técnicas */
+/* SECCIÓN SKILLS */
+.skills-section {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.skills-section h3 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #6495ED;
+    text-align: center;
+}
+
 .keyboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
@@ -276,23 +314,34 @@ canvas {
     padding-bottom: 50px;
 }
 
-/* Estilos base para las teclas */
+/*Key*/
 .key {
-    background: linear-gradient(135deg, #2d3748 0%, #1a202c 50%, #2d3748 100%);
-    border: none;
+    width: 80px;
+    height: 80px;
     border-radius: 12px;
     padding: 25px 15px;
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 50%, #2d3748 100%);
     text-align: center;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    overflow: hidden;
     box-shadow: 
         inset 2px 2px 4px rgba(255, 255, 255, 0.1),
         inset -2px -2px 4px rgba(0, 0, 0, 0.3),
         0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
+.key:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.key i {
+    font-size: 2.2rem;
+}
+
+/* Estilos base para las teclas */
 .key::before {
     content: '';
     position: absolute;
@@ -309,26 +358,66 @@ canvas {
     background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
 }
 
-/* Colores específicos actualizados según tus especificaciones */
-.python-key {
-    background: linear-gradient(135deg, #ffd43b 0%, #ffe552 50%, #ffee78 100%);
-    box-shadow: 
-        inset 2px 2px 4px rgba(255, 238, 120, 0.4),
-        inset -2px -2px 4px rgba(0, 0, 0, 0.3),
-        0 8px 16px rgba(255, 212, 59, 0.3);
-}
+/* Colores específicos para cada skill */
+.python-key { border-color: #3776ab; }
+.python-key:hover { background: rgba(55, 118, 171, 0.2); border-color: #3776ab; }
 
-.python-key i {
-    color: #2b5b84;
-}
+.cpp-key { border-color: #00599c; }
+.cpp-key:hover { background: rgba(0, 89, 156, 0.2); border-color: #00599c; }
 
-.cpp-key {
-    background: linear-gradient(135deg, #004482 0%, #0056a3 50%, #0066cc 100%);
-    box-shadow: 
-        inset 2px 2px 4px rgba(0, 102, 204, 0.4),
-        inset -2px -2px 4px rgba(0, 0, 0, 0.4),
-        0 8px 16px rgba(0, 68, 130, 0.3);
-}
+.sql-key { border-color: #336791; }
+.sql-key:hover { background: rgba(51, 103, 145, 0.2); border-color: #336791; }
+
+.git-key { border-color: #f05032; }
+.git-key:hover { background: rgba(240, 80, 50, 0.2); border-color: #f05032; }
+
+.pytorch-key { border-color: #ee4c2c; }
+.pytorch-key:hover { background: rgba(238, 76, 44, 0.2); border-color: #ee4c2c; }
+
+.sklearn-key { border-color: #f7931e; }
+.sklearn-key:hover { background: rgba(247, 147, 30, 0.2); border-color: #f7931e; }
+
+.pandas-key { border-color: #150458; }
+.pandas-key:hover { background: rgba(21, 4, 88, 0.2); border-color: #150458; }
+
+.numpy-key { border-color: #013243; }
+.numpy-key:hover { background: rgba(1, 50, 67, 0.2); border-color: #013243; }
+
+.matplotlib-key { border-color: #11557c; }
+.matplotlib-key:hover { background: rgba(17, 85, 124, 0.2); border-color: #11557c; }
+
+.fastapi-key { border-color: #009688; }
+.fastapi-key:hover { background: rgba(0, 150, 136, 0.2); border-color: #009688; }
+
+.docker-key { border-color: #2496ed; }
+.docker-key:hover { background: rgba(36, 150, 237, 0.2); border-color: #2496ed; }
+
+.linux-key { border-color: #fcc624; }
+.linux-key:hover { background: rgba(252, 198, 36, 0.2); border-color: #fcc624; }
+
+.redis-key { border-color: #dc382d; }
+.redis-key:hover { background: rgba(220, 56, 45, 0.2); border-color: #dc382d; }
+
+.kubernetes-key { border-color: #326ce5; }
+.kubernetes-key:hover { background: rgba(50, 108, 229, 0.2); border-color: #326ce5; }
+
+.aws-key { border-color: #ff9900; }
+.aws-key:hover { background: rgba(255, 153, 0, 0.2); border-color: #ff9900; }
+
+.airflow-key { border-color: #017cee; }
+.airflow-key:hover { background: rgba(1, 124, 238, 0.2); border-color: #017cee; }
+
+.grafana-key { border-color: #f46800; }
+.grafana-key:hover { background: rgba(244, 104, 0, 0.2); border-color: #f46800; }
+
+.prometheus-key { border-color: #e6522c; }
+.prometheus-key:hover { background: rgba(230, 82, 44, 0.2); border-color: #e6522c; }
+
+.zsh-key { border-color: #89e051; }
+.zsh-key:hover { background: rgba(137, 224, 81, 0.2); border-color: #89e051; }
+
+.spark-key { border-color: #e25a1c; }
+.spark-key:hover { background: rgba(226, 90, 28, 0.2); border-color: #e25a1c; }
 
 .linux-key {
     background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #404040 100%);
@@ -362,7 +451,6 @@ canvas {
         0 8px 16px rgba(102, 102, 102, 0.3);
 }
 
-/* Mantener colores originales para las demás tecnologías */
 .sql-key {
     background: linear-gradient(135deg, #336791 0%, #295275 50%, #1f3d59 100%);
     box-shadow: 
@@ -481,32 +569,32 @@ canvas {
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
 }
 
-/* Tooltip corregido - ahora aparece debajo sin superponerse */
-.key::after {
-    content: attr(data-skill);
-    position: absolute;
-    bottom: -50px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(20, 20, 20, 0.95) 100%);
+/* Tooltip con JavaScript - elemento independiente */
+.skill-tooltip {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: #fff;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 0.85rem;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.9rem;
     font-weight: 500;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 20;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
     box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.3),
+        0 8px 32px rgba(0, 0, 0, 0.5),
         inset 1px 1px 2px rgba(255, 255, 255, 0.1);
+    transform: translateY(10px);
 }
 
-.key:hover::after {
+.skill-tooltip.show {
     opacity: 1;
-    transform: translateX(-50%) translateY(-5px);
+    transform: translateY(0);
 }
 
 /* Sección de experiencia */
@@ -528,7 +616,7 @@ canvas {
     top: 0;
     bottom: 0;
     width: 2px;
-    background: linear-gradient(to bottom, #a855f7, #ec4899);
+    background: linear-gradient(to bottom, #2dd4bf, rgba(45, 212, 190, 0.386));
 }
 
 .timeline-item {
@@ -538,19 +626,19 @@ canvas {
 
 .timeline-dot {
     position: absolute;
-    left: -28px;
-    top: 10px;
-    width: 16px;
-    height: 16px;
+    left: -24px;
+    top: 80px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
-    background: #333;
-    border: 3px solid #a855f7;
+    background: rgb(4, 57, 50);
+    border: 3px solid #2dd4bf;
     z-index: 1;
 }
 
 .timeline-dot.active {
-    background: #a855f7;
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+    background: #2dd4bf;
+    box-shadow: 0 0 20px rgba(45, 212, 190, 0.5);
 }
 
 /* Card específica para Experience */
@@ -570,6 +658,16 @@ canvas {
     background: rgba(45, 212, 191, 0.12);
     border-color: rgba(45, 212, 191, 0.4);
     box-shadow: 0 15px 35px rgba(45, 212, 191, 0.2);
+}
+
+.experience-title{
+    font-size: 4rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    background: linear-gradient(135deg, #2dd4bf, rgba(45, 212, 190, 0.505));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .experience-card h3 {
@@ -706,6 +804,16 @@ canvas {
 }
 
 /* Sección de cursos */
+
+.courses-title{
+    font-size: 4rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    background: linear-gradient(135deg, #ef4444, #8a1515d8);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 .courses-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -724,13 +832,13 @@ canvas {
 
 .course-card:hover {
     transform: translateY(-5px);
-    background: rgba(168, 85, 247, 0.1);
-    border-color: #a855f7;
-    box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
+    background: rgba(143, 59, 59, 0.1);
+    border-color: #ef4444;
+    box-shadow: 0 10px 30px rgba(143, 59, 59, 0.2);
 }
 
 .course-link {
-    color: #a855f7;
+    color: #ef4444;
     text-decoration: none;
     font-size: 1.2rem;
     font-weight: bold;
@@ -738,7 +846,7 @@ canvas {
 }
 
 .course-link:hover {
-    color: #ec4899;
+    color: #dc2626;
 }
 
 .completion-date {
@@ -761,20 +869,20 @@ canvas {
 
 .course-points li::before {
     content: '•';
-    color: #a855f7;
+    color: #ef4444;
     position: absolute;
     left: 0;
 }
 
 .certificate-link {
-    color: #a855f7;
+    color: #ef4444;
     text-decoration: none;
     font-size: 0.9rem;
     transition: color 0.3s ease;
 }
 
 .certificate-link:hover {
-    color: #ec4899;
+    color: #dc2626;
 }
 
 /* Responsive Design */
@@ -817,6 +925,7 @@ canvas {
     }
     
     .section {
+        margin: 2rem 0;
         padding: 80px 1rem 30px;
     }
 }
